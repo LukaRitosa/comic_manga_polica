@@ -7,7 +7,7 @@ import org.example.comic_manga_polica.entity.Comic;
 import java.util.List;
 
 public interface ComicService {
-    List<Comic> FindAll();
+    List<Comic> FindAll(String naziv, Integer year);
     Comic findById(Long Id);
     Comic create(ComicRequest req);
     Comic update(ComicRequest req);

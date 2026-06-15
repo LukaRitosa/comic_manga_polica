@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface ComicRepository extends JpaRepository<Comic, Long> {
 
-    Optional<Comic> findByNaziv(String naziv);
+    List<Comic> findByNazivContainingIgnoreCase(String naziv);
 
     boolean existsByNaziv(String naziv);
     
