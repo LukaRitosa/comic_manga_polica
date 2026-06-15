@@ -6,49 +6,35 @@ import jakarta.persistence.*;
 @Table(name="comic")
 public class Comic {
     @Id
-    @GeneratedValue(
-            strategy = GenerationType.IDENTITY
-    )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(
-            nullable = false,
-            unique = true,
-            length = 120
-    )
+    @Column(nullable = false, unique = true, length = 120)
     private String naziv;
 
-    @Column(
-            nullable = false,
-            length = 120
-    )
+    @Column(nullable = false, length = 120)
     private String autor;
 
-    @Column(
-            nullable = false,
-            length = 1000
-    )
+    @Column(nullable = false, length = 1000)
     private String slika;
 
     @Enumerated(EnumType.STRING)
-    @Column(
-            nullable = false,
-            length = 120
-    )
+    @Column(nullable = false, length = 120)
     private Tip tip;
 
-    public enum Tip {
-        COMIC,
-        MANGA
-    }
+    @Column(nullable = false)
+    private Integer releaseYear;
+
 
     protected Comic(){}
 
-    public Comic(Long id, String naziv, String autor, String slika) {
+    public Comic(Long id, String naziv, String autor, String slika, Tip tip, Integer releaseYear) {
         setId(id);
         setNaziv(naziv);
         setAutor(autor);
         setSlika(slika);
+        setTip(tip);
+        setReleaseYear(releaseYear);
     }
 
     public Long getId() {
@@ -81,5 +67,21 @@ public class Comic {
 
     public void setSlika(String slika) {
         this.slika = slika;
+    }
+
+    public Tip getTip() {
+        return tip;
+    }
+
+    public void setTip(Tip tip) {
+        this.tip = tip;
+    }
+
+    public Integer getReleaseYear() {
+        return releaseYear;
+    }
+
+    public void setReleaseYear(Integer releaseYear) {
+        this.releaseYear = releaseYear;
     }
 }

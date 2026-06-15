@@ -6,16 +6,11 @@ import jakarta.persistence.*;
 @Table(name="bookshelf")
 public class BookShelf {
     @Id
-    @GeneratedValue(
-            strategy = GenerationType.IDENTITY
-    )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    @Column(
-            nullable = false,
-            length = 120
-    )
+    @Column(nullable = false, length = 120)
     private Status stanje;
 
     @ManyToOne(optional=false, fetch = FetchType.EAGER)

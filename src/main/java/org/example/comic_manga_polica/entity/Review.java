@@ -7,20 +7,14 @@ import jakarta.persistence.*;
 public class Review {
 
     @Id
-    @GeneratedValue(
-            strategy = GenerationType.IDENTITY
-    )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(
-            nullable = false
-    )
+    @Column(nullable = false)
     private Integer zvjezdice;
 
 
-    @Column(
-            length = 500
-    )
+    @Column(length = 500)
     private String komentar;
 
     @OneToOne(optional=false, fetch = FetchType.EAGER)
