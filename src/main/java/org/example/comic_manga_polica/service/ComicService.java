@@ -7,10 +7,10 @@ import org.example.comic_manga_polica.entity.Comic;
 import java.util.List;
 
 public interface ComicService {
-    List<Comic> FindAll(String naziv, Integer year);
+    List<Comic> findAll(String naziv, Integer year);
     Comic findById(Long Id);
     Comic create(ComicRequest req);
-    Comic update(ComicRequest req);
-    Void delete(Long comicId);
+    Comic update(Long id, ComicRequest req);
+    void delete(Long id);
     Comic findByShelfId(Long shelfId);
 }

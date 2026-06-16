@@ -6,9 +6,9 @@ import org.example.comic_manga_polica.entity.Review;
 import java.util.List;
 
 public interface ReviewService {
-    List<Review> FindAll(Long comicMangaId, Integer zvjezdice);
+    List<Review> findAll(Integer zvjezdice);
     Review findById(Long Id);
     Review create(ReviewRequest req);
-    Review update(ReviewRequest req);
-    Void delete(Long reviewId);
+    Review update(Long id, ReviewRequest req);
+    void delete(Long id);
 }

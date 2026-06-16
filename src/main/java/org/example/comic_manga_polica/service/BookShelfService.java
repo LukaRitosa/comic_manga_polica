@@ -7,9 +7,9 @@ import org.example.comic_manga_polica.entity.Status;
 import java.util.List;
 
 public interface BookShelfService {
-    List<BookShelf> FindAll(Status stanje);
-    BookShelf findById(Long Id);
+    List<BookShelf> findAll(Status stanje);
+    BookShelf findById(Long id);
     BookShelf create(BookShelfRequest req);
-    BookShelf update(BookShelfRequest req);
-    Void delete(Long comicId);
+    BookShelf update(Long id, BookShelfRequest req);
+    void delete(Long d);
 }
