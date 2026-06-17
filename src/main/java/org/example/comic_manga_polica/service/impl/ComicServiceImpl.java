@@ -1,8 +1,11 @@
 package org.example.comic_manga_polica.service.impl;
 
+import org.example.comic_manga_polica.client.ComicVineClient;
+import org.example.comic_manga_polica.client.JikanClient;
 import org.example.comic_manga_polica.dto.ComicRequest;
 import org.example.comic_manga_polica.entity.BookShelf;
 import org.example.comic_manga_polica.entity.Comic;
+import org.example.comic_manga_polica.entity.Tip;
 import org.example.comic_manga_polica.exeption.NotFoundException;
 import org.example.comic_manga_polica.repository.BookShelfRepository;
 import org.example.comic_manga_polica.repository.ComicRepository;
@@ -13,12 +16,16 @@ import java.util.List;
 
 @Service
 public class ComicServiceImpl implements ComicService {
+    private final JikanClient jikanClient;
+    private final ComicVineClient comicVineClient;
     private ComicRepository comicRepository;
     private BookShelfRepository bookShelfRepository;
 
-    public ComicServiceImpl(ComicRepository comicRepository, BookShelfRepository bookShelfRepository) {
+    public ComicServiceImpl(ComicRepository comicRepository, BookShelfRepository bookShelfRepository, JikanClient jikanClient, ComicVineClient comicVineClient) {
         this.comicRepository = comicRepository;
         this.bookShelfRepository = bookShelfRepository;
+        this.jikanClient = jikanClient;
+        this.comicVineClient = comicVineClient;
     }
 
     @Override
@@ -78,4 +85,47 @@ public class ComicServiceImpl implements ComicService {
 
         return bookShelf.getComic();
     }
+
+    @Override
+    public Comic createComicFromApi(String naziv, Tip tip) {
+        Comic comic= new Comic(null, naziv, "Nepoznato", "", tip, 1900);
+
+        if (tip==Tip.MANGA){
+            jikanClient.searchManga(naziv).ifPresent(data ->{
+                if (data.title()!=null){
+                    comic.setNaziv(data.title());
+                }
+                if(data.authors()!=null && !data.authors().isEmpty()){
+                    comic.setAutor(data.authors().get(0).name());
+                }
+                if(data.images()!=null && data.images().jpg()!=null){
+                    comic.setSlika(data.images().jpg().large_image_url());
+                }
+                if (data.published()!=null && data.published().from()!=null){
+                    comic.setReleaseYear(Integer.parseInt(data.published().from().substring(0, 4)));
+                }
+            });
+        } else {
+            comicVineClient.searchComic(naziv).ifPresent(volume ->{
+                if (volume.name()!=null){
+                    comic.setNaziv(volume.name());
+                }
+                if(volume.image()!=null){
+                    comic.setSlika(volume.image().medium_url());
+                }
+                if (volume.start_year()!=null){
+                    comic.setReleaseYear(Integer.parseInt(volume.start_year()));
+                }
+
+                comicVineClient.findWriter(volume.id()).ifPresentOrElse(
+                        comic::setAutor,
+                        ()->comic.setAutor(volume.publisher()!=null ? volume.publisher().name() : "Nepoznato")
+                );
+            });
+        }
+        // return comicRepository.save(comic);
+        return comic;
+    }
+
+
 }

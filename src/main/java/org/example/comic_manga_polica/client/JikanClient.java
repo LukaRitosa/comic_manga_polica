@@ -1,6 +1,7 @@
 package org.example.comic_manga_polica.client;
 
 import org.example.comic_manga_polica.dto.external.jikan.JikanDtos;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
@@ -11,8 +12,8 @@ public class JikanClient {
 
     private final RestClient restClient;
 
-    public JikanClient(RestClient jikanRestClient) {
-        this.restClient = jikanRestClient;
+    public JikanClient(@Qualifier("jikanRestClient") RestClient restClient) {
+        this.restClient = restClient;
     }
 
     public Optional<JikanDtos.MangaData> searchManga(String naziv) {

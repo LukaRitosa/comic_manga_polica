@@ -40,4 +40,54 @@ public class ComicVineClient {
             return Optional.empty();
         }
     }
+
+    private Optional<Long> findFirstIssueId(Long volumeId){
+        try{
+            ComicVineDtos.IssueListResponse response= restClient.get()
+                    .uri(uriBuilder -> uriBuilder
+                            .path("/issues/")
+                            .queryParam("api_key", apiKey)
+                            .queryParam("format", "json")
+                            .queryParam("filter", "volume:" + volumeId)
+                            .queryParam("sort", "issue_number:asc")
+                            .queryParam("limit", 1)
+                            .queryParam("field_list", "id")
+                            .build()
+                    ).retrieve()
+                    .body(ComicVineDtos.IssueListResponse.class);
+            if(response==null || response.results().isEmpty()){
+                return Optional.empty();
+            }
+            return Optional.of(response.results().get(0).id());
+        } catch (Exception e) {
+            return Optional.empty();
+        }
+    }
+
+    private Optional<String> findWriterFromIssue(Long issueId){
+        try{
+            ComicVineDtos.IssueDetailResponse response= restClient.get()
+                    .uri(uriBuilder -> uriBuilder
+                            .path("/issue/4000-" + issueId + "/")
+                            .queryParam("api_key", apiKey)
+                            .queryParam("format", "json")
+                            .queryParam("field_list", "person_credits")
+                            .build()
+                    ).retrieve()
+                    .body(ComicVineDtos.IssueDetailResponse.class);
+            if(response==null || response.results()==null){
+                return Optional.empty();
+            }
+            return response.results().person_credits().stream()
+                    .filter(p-> p.role()!=null && p.role().toLowerCase().contains("writer"))
+                    .map(ComicVineDtos.PersonCredit::name)
+                    .findFirst();
+        } catch (Exception e){
+            return Optional.empty();
+        }
+    }
+
+    public Optional<String> findWriter(Long volumeId){
+        return findFirstIssueId(volumeId).flatMap(this::findWriterFromIssue);
+    }
 }
