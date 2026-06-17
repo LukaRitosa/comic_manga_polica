@@ -23,6 +23,9 @@ public class ComicServiceImpl implements ComicService {
 
     @Override
     public List<Comic> findAll(String naziv, Integer year) {
+        if (naziv != null && !naziv.isBlank() && year != null) {
+            return comicRepository.findByNazivContainingIgnoreCaseAndReleaseYear(naziv, year);
+        }
         if (naziv!=null && !naziv.isBlank()){
             return this.comicRepository.findByNazivContainingIgnoreCase(naziv);
         }

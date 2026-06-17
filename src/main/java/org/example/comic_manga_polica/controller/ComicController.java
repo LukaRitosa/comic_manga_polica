@@ -20,6 +20,7 @@ public class ComicController {
 
     @GetMapping
     public ResponseEntity<List<Comic>> getAll(@RequestParam(required = false) String naslov, @RequestParam(required = false) Integer year){
+
         return ResponseEntity.ok(comicService.findAll(naslov, year));
     }
 

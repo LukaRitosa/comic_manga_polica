@@ -24,7 +24,7 @@ public class ReviewController {
         return ResponseEntity.ok(reviewService.findAll(zvjezdice));
     }
 
-    @GetMapping
+    @GetMapping("{id}")
     public ResponseEntity<Review> getById(@PathVariable Long id){
         return ResponseEntity.ok(reviewService.findById(id));
     }
