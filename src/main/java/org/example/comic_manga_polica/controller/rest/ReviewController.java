@@ -1,9 +1,8 @@
-package org.example.comic_manga_polica.controller;
+package org.example.comic_manga_polica.controller.rest;
 
 import org.example.comic_manga_polica.dto.ReviewRequest;
 import org.example.comic_manga_polica.entity.Review;
 import org.example.comic_manga_polica.service.ReviewService;
-import org.example.comic_manga_polica.service.impl.ReviewServiceImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,7 +33,7 @@ public class ReviewController {
         Review saved= reviewService.create(reviewRequest);
 
         return ResponseEntity
-                .created(URI.create("api/reviews" + saved.getId()))
+                .created(URI.create("api/reviews/" + saved.getId()))
                 .body(saved);
     }
 

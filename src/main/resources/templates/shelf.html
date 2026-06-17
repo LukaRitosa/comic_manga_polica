@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Moja polica</title>
+</head>
+<body>
+<h1>Moja polica</h1>
+
+<table border="1">
+    <thead>
+    <tr>
+        <th>Naziv</th>
+        <th>Autor</th>
+        <th>Godina</th>
+        <th>Status</th>
+        <th>Slika</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="stavka : ${stavke}">
+        <td th:text="${stavka.comic.naziv}"></td>
+        <td th:text="${stavka.comic.autor}"></td>
+        <td th:text="${stavka.comic.releaseYear}"></td>
+        <td th:text="${stavka.stanje}"></td>
+        <td><img th:src="${stavka.comic.slika}" width="80"></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

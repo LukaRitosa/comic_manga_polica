@@ -1,4 +1,4 @@
-package org.example.comic_manga_polica.controller;
+package org.example.comic_manga_polica.controller.rest;
 
 import org.example.comic_manga_polica.dto.ComicRequest;
 import org.example.comic_manga_polica.entity.Comic;
@@ -34,7 +34,7 @@ public class ComicController {
         Comic saved= comicService.create(comicRequest);
 
         return ResponseEntity
-                .created(URI.create("api/comics" + saved.getId()))
+                .created(URI.create("api/comics/" + saved.getId()))
                 .body(saved);
     }
 

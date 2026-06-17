@@ -1,4 +1,4 @@
-package org.example.comic_manga_polica.controller;
+package org.example.comic_manga_polica.controller.rest;
 
 import org.example.comic_manga_polica.dto.BookShelfRequest;
 import org.example.comic_manga_polica.entity.BookShelf;
@@ -34,7 +34,7 @@ public class BookShelfController {
         BookShelf saved= bookShelfService.create(bookShelfRequest);
 
         return ResponseEntity
-                .created(URI.create("api/shelf" + saved.getId()))
+                .created(URI.create("api/shelf/" + saved.getId()))
                 .body(saved);
     }
 
@@ -45,7 +45,7 @@ public class BookShelfController {
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Void> update(@PathVariable Long id){
+    public ResponseEntity<Void> delete(@PathVariable Long id){
         bookShelfService.delete(id);
         return ResponseEntity.noContent().build();
     }
