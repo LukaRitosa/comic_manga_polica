@@ -52,11 +52,22 @@ public class BookShelfServiceImpl implements BookShelfService {
                 .orElseThrow(() -> new NotFoundException("Comic not found" + req.getComicId()));
 
         BookShelf bookShelf= this.bookShelfRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Bookshelf not found" + req.getComicId()));;
+                .orElseThrow(() -> new NotFoundException("Bookshelf not found" + id));;
 
 
         bookShelf.setStanje(req.getStanje());
         bookShelf.setComic(comic);
+
+        return this.bookShelfRepository.save(bookShelf);
+    }
+
+    @Override
+    public BookShelf updateStatus(Long id, Status status) {
+        BookShelf bookShelf= this.bookShelfRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Bookshelf not found" + id));;
+
+
+        bookShelf.setStanje(status);
 
         return this.bookShelfRepository.save(bookShelf);
     }

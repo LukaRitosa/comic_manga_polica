@@ -3,6 +3,11 @@
 
 <body>
 
+    <form th:action="@{/shelf/dodaj}" method="post">
+        <input type="hidden" name="comicId" th:value="${comic.id}">
+        <button type="submit">Dodaj u policu</button>
+    </form>
+
     <h1 th:text="${comic.naziv}"></h1>
 
     <img th:src="${comic.slika}" width="250">

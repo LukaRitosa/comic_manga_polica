@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <body>
+        <h1 th:text="${shelf.comic.naziv}"></h1>
+
+        <img th:src="${shelf.comic.slika}" width="250">
+
+        <p>
+            Autor:
+            <span th:text="${shelf.comic.autor}"></span>
+        </p>
+
+        <p>
+            Godina:
+            <span th:text="${shelf.comic.releaseYear}"></span>
+        </p>
+
+        <p>
+            Tip:
+            <span th:text="${shelf.comic.tip}"></span>
+        </p>
+
+        <p>
+            Status:
+            <span th:text="${shelf.stanje}"></span>
+        </p>
+
+        <form th:action="@{/shelf/status}" method="post">
+            <input type="hidden" name="shelfId" th:value="${shelf.id}">
+
+            <select name="status">
+                <option value="ON_SHELF"
+                th:selected="${shelf.stanje.name()=='ON_SHELF'}">
+                    Na polici
+                </option>
+
+                <option value="READING"
+                th:selected="${shelf.stanje.name()=='READING'}">
+                    Čitam
+                </option>
+
+                <option value="FINISHED"
+                th:selected="${shelf.stanje.name()=='FINISHED'}">
+                    Pročitano
+                </option>
+            </select>
+
+            <button type="submit">
+                Promijeni status
+            </button>
+        </form>
+
+        <br>
+
+        <a href="/shelf">
+            Nazad na policu
+        </a>
+
+    </body>
+</html>

@@ -1,4 +1,4 @@
-package org.example.comic_manga_polica.controller;
+package org.example.comic_manga_polica.controller.rest;
 
 import org.example.comic_manga_polica.client.ComicVineClient;
 import org.example.comic_manga_polica.client.JikanClient;

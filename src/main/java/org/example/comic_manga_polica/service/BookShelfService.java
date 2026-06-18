@@ -12,4 +12,5 @@ public interface BookShelfService {
     BookShelf create(BookShelfRequest req);
     BookShelf update(Long id, BookShelfRequest req);
     void delete(Long d);
+    BookShelf updateStatus(Long id, Status status);
 }

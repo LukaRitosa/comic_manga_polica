@@ -1,31 +1,62 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <title>Moja polica</title>
 </head>
 <body>
-<h1>Moja polica</h1>
+    <h1>Moja polica</h1>
 
-<table border="1">
-    <thead>
-    <tr>
-        <th>Naziv</th>
-        <th>Autor</th>
-        <th>Godina</th>
-        <th>Status</th>
-        <th>Slika</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="stavka : ${stavke}">
-        <td th:text="${stavka.comic.naziv}"></td>
-        <td th:text="${stavka.comic.autor}"></td>
-        <td th:text="${stavka.comic.releaseYear}"></td>
-        <td th:text="${stavka.stanje}"></td>
-        <td><img th:src="${stavka.comic.slika}" width="80"></td>
-    </tr>
-    </tbody>
-</table>
+    <form method="get" th:action="@{/shelf}">
+        <select name="stanje">
+            <option value="">
+                Sve
+            </option>
+
+            <option value="ON_SHELF"
+            th:selected="${stanje?.name()=='ON_SHELF'}">
+                Na polici
+            </option>
+
+            <option value="READING"
+                    th:selected="${stanje?.name()=='READING'}">
+                Čitam
+            </option>
+
+            <option value="FINISHED"
+                    th:selected="${stanje?.name()=='FINISHED'}">
+                Pročitano
+            </option>
+        </select>
+
+        <button type="select">
+            Filtriraj
+        </button>
+    </form>
+
+    <br>
+
+    <table border="1">
+        <thead>
+        <tr>
+            <th>Naziv</th>
+            <th>Autor</th>
+            <th>Godina</th>
+            <th>Status</th>
+            <th>Slika</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="stavka : ${stavke}"
+        th:onclick="|window.location='/shelf/' + ${stavka.id}|"
+        style="cursor: pointer;">
+            <td th:text="${stavka.comic.naziv}"></td>
+            <td th:text="${stavka.comic.autor}"></td>
+            <td th:text="${stavka.comic.releaseYear}"></td>
+            <td th:text="${stavka.stanje}"></td>
+            <td><img th:src="${stavka.comic.slika}" width="80"></td>
+        </tr>
+        </tbody>
+    </table>
 </body>
 </html>
