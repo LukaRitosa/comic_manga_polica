@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -31,6 +32,44 @@ public class JikanClient {
                 return Optional.empty();
             }
             return Optional.of(response.data().get(0));
+        } catch (Exception e) {
+            return Optional.empty();
+        }
+    }
+
+    public List<JikanDtos.MangaData> searchMultipleManga(String naziv) {
+        try {
+            JikanDtos.SearchResponse response = restClient.get()
+                    .uri(uriBuilder -> uriBuilder
+                            .path("/manga")
+                            .queryParam("q", naziv)
+                            .queryParam("limit", 3)
+                            .build())
+                    .retrieve()
+                    .body(JikanDtos.SearchResponse.class);
+
+            if (response == null || response.data()==null) {
+                return List.of();
+            }
+            return response.data();
+        } catch (Exception e) {
+            return List.of();
+        }
+    }
+
+    public Optional<JikanDtos.MangaData> getMangaById(Long malId){
+        try {
+            JikanDtos.SingleResponse response = restClient.get()
+                    .uri(uriBuilder -> uriBuilder
+                            .path("/manga/" + malId)
+                            .build())
+                    .retrieve()
+                    .body(JikanDtos.SingleResponse.class);
+
+            if (response == null || response.data()==null) {
+                return Optional.empty();
+            }
+            return Optional.of(response.data());
         } catch (Exception e) {
             return Optional.empty();
         }

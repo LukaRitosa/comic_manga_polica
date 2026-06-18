@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+
+    <h1 th:text="${comic.naziv}"></h1>
+
+    <img th:src="${comic.slika}" width="250">
+
+    <p>
+        Autor:
+        <span th:text="${comic.autor}"></span>
+    </p>
+
+    <p>
+        Godina:
+        <span th:text="${comic.releaseYear}"></span>
+    </p>
+
+    <p>
+        Tip:
+        <span th:text="${comic.tip}"></span>
+    </p>
+
+    <a href="/pretraga">
+        Nova pretraga
+    </a>
+
+</body>
+</html>

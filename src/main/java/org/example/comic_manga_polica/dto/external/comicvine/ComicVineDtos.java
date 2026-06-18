@@ -9,6 +9,9 @@ public class ComicVineDtos {
     public record SearchResponse(List<Volume> results) {}
 
     @JsonIgnoreProperties(ignoreUnknown = true)
+    public record VolumeDetailResponse(Volume results) {}
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
     public record Volume(Long id, String name, String start_year, Image image, Publisher publisher) {}
 
     @JsonIgnoreProperties(ignoreUnknown = true)

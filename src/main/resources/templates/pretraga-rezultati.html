@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Rezultati</title>
+</head>
+    <body>
+        <h1>Rezultati za "<span th:text="${naziv}"></span>"</h1>
+
+        <p th:if="${#lists.isEmpty(rezultati)}" style="display:flex; gap:20px;">
+            Nema rezultata. Probaj drugi naziv.
+        </p>
+
+        <div th:unless="${#lists.isEmpty(rezultati)}" style="border:1px solid black; padding:10px; width:200px;">
+            <a th:each="rez : ${rezultati}"
+               th:href="@{/pretraga/spremi(tip=${rez.tip}, externalId=${rez.externalId})}"
+               style="
+                    border:1px solid black; padding:10px;
+                    width:200px;
+                    display:block;
+                    text-decoration:none;
+                    color:black;
+                    transition:0.2s;
+               "
+               onmouseover="this.style.transform='scale(1.03)'"
+               onmouseout="this.style.transform='scale(1)'">
+
+                <img th:if="${rez.slika != ''}" th:src="${rez.slika}" width="150">
+                <h3 th:text="${rez.naziv}"></h3>
+                <p th:text="${rez.releaseYear}"></p>
+            </a>
+        </div>
+
+        <br>
+        <a th:href="@{/pretraga}">Nova pretraga</a>
+    </body>
+</html>

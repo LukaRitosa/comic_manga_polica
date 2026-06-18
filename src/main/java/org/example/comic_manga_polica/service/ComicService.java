@@ -1,6 +1,7 @@
 package org.example.comic_manga_polica.service;
 
 
+import org.example.comic_manga_polica.dto.ComicPreview;
 import org.example.comic_manga_polica.dto.ComicRequest;
 import org.example.comic_manga_polica.entity.Comic;
 import org.example.comic_manga_polica.entity.Tip;
@@ -15,4 +16,6 @@ public interface ComicService {
     void delete(Long id);
     Comic findByShelfId(Long shelfId);
     Comic createComicFromApi(String naziv, Tip tip);
+    List<ComicPreview> searchPreview(String naziv, Tip tip);
+    Comic confirmAndSave(Tip tip, Long externalId);
 }

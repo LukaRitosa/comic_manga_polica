@@ -2,7 +2,10 @@ package org.example.comic_manga_polica.service.impl;
 
 import org.example.comic_manga_polica.client.ComicVineClient;
 import org.example.comic_manga_polica.client.JikanClient;
+import org.example.comic_manga_polica.dto.ComicPreview;
 import org.example.comic_manga_polica.dto.ComicRequest;
+import org.example.comic_manga_polica.dto.external.comicvine.ComicVineDtos;
+import org.example.comic_manga_polica.dto.external.jikan.JikanDtos;
 import org.example.comic_manga_polica.entity.BookShelf;
 import org.example.comic_manga_polica.entity.Comic;
 import org.example.comic_manga_polica.entity.Tip;
@@ -127,5 +130,69 @@ public class ComicServiceImpl implements ComicService {
         return comic;
     }
 
+    @Override
+    public List<ComicPreview> searchPreview(String naziv, Tip tip) {
+        if (tip==Tip.MANGA){
+            return jikanClient.searchMultipleManga(naziv).stream()
+                    .map(data -> new ComicPreview(
+                            Tip.MANGA,
+                            data.mal_id(),
+                            data.title(),
+                            // (data.authors()!= null && !data.authors().isEmpty()) ? data.authors().get(0).name() : "Nepoznato",
+                            (data.images()!=null && data.images().jpg()!=null) ? data.images().jpg().large_image_url() : "",
+                            (data.published()!=null && data.published().from()!=null) ? Integer.parseInt(data.published().from().substring(0, 4)) : null
+                    ))
+                    .toList();
+        } else {
+            return comicVineClient.searchMultipleComic(naziv).stream()
+                    .map(volume -> new ComicPreview(
+                            Tip.COMIC,
+                            volume.id(),
+                            volume.name(),
+                            volume.image() != null ? volume.image().medium_url() : "",
+                            volume.start_year()!=null ? Integer.parseInt(volume.start_year()) : null
+                    ))
+                    .toList();
+        }
+    }
+
+    @Override
+    public Comic confirmAndSave(Tip tip, Long externalId){
+        if (tip==Tip.MANGA){
+            JikanDtos.MangaData data= jikanClient.getMangaById(externalId)
+                    .orElseThrow(() -> new NotFoundException("Manga nije pronađena: " + externalId));
+
+            Comic postojeci= comicRepository.findByNaziv(data.title()).orElse(null);
+
+            if (postojeci != null) return postojeci;
+
+            String autor = (data.authors() != null && !data.authors().isEmpty()) ? data.authors().get(0).name() : "Nepoznato";
+            String slika = (data.images() != null && data.images().jpg() != null) ? data.images().jpg().large_image_url() : "";
+            Integer godina = (data.published() != null && data.published().from() != null) ? Integer.parseInt(data.published().from().substring(0, 4)) : null;
+
+            Comic comic = new Comic(null, data.title(), autor, slika, Tip.MANGA, godina);
+            return comicRepository.save(comic);
+        } else {
+            ComicVineDtos.Volume volume= comicVineClient.getVolumeById(externalId)
+                    .orElseThrow(() -> new NotFoundException("Volume nije pronađen: " + externalId));
+
+            Comic postoji= comicRepository.findByNaziv(volume.name()).orElse(null);
+
+            if(postoji!=null) return postoji;
+
+            String slika= volume.image() !=null ? volume.image().medium_url() : "";
+            Integer godina= volume.start_year()!= null ? Integer.parseInt(volume.start_year()) : null;
+
+            Comic comic= new Comic(null, volume.name(), "Nepoznato", slika, Tip.COMIC, godina);
+
+            comicVineClient.findWriter(externalId).ifPresentOrElse(
+                    comic::setAutor,
+                    ()->comic.setAutor("Nepoznato")
+            );
+
+            return comicRepository.save(comic);
+
+        }
+    };
 
 }

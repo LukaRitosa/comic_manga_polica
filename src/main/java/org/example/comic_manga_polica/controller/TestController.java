@@ -42,4 +42,9 @@ public class TestController {
     public Object testCreateComic(@RequestParam String naziv, @RequestParam Tip tip) {
         return comicService.createComicFromApi(naziv, tip);
     }
+
+    @GetMapping("/preview")
+    public Object testPreview(@RequestParam String naziv, @RequestParam Tip tip) {
+        return comicService.searchPreview(naziv, tip);
+    }
 }

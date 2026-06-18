@@ -9,7 +9,10 @@ public class JikanDtos {
     public record SearchResponse(List<MangaData> data) {}
 
     @JsonIgnoreProperties(ignoreUnknown = true)
-    public record MangaData(String title, Images images, List<Person> authors, Published published) {}
+    public record SingleResponse(MangaData data) {}
+
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public record MangaData(Long mal_id, String title, Images images, List<Person> authors, Published published) {}
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public record Images(ImageSet jpg) {}

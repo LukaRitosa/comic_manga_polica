@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -38,6 +39,28 @@ public class ComicVineClient {
             return Optional.of(response.results().get(0));
         } catch (Exception e) {
             return Optional.empty();
+        }
+    }
+
+    public List<ComicVineDtos.Volume> searchMultipleComic(String naziv) {
+        try {
+            ComicVineDtos.SearchResponse response = restClient.get()
+                    .uri(uriBuilder -> uriBuilder
+                            .path("/volumes/")
+                            .queryParam("api_key", apiKey)
+                            .queryParam("format", "json")
+                            .queryParam("filter", "name:" + naziv)
+                            .queryParam("limit", 3)
+                            .build())
+                    .retrieve()
+                    .body(ComicVineDtos.SearchResponse.class);
+
+            if (response == null || response.results()==null) {
+                return List.of();
+            }
+            return response.results();
+        } catch (Exception e) {
+            return List.of();
         }
     }
 
@@ -89,5 +112,24 @@ public class ComicVineClient {
 
     public Optional<String> findWriter(Long volumeId){
         return findFirstIssueId(volumeId).flatMap(this::findWriterFromIssue);
+    }
+
+    public Optional<ComicVineDtos.Volume> getVolumeById(Long volumeId){
+        try{
+            ComicVineDtos.VolumeDetailResponse response= restClient.get()
+                    .uri(uriBuilder -> uriBuilder
+                            .path("/volume/4050-" + volumeId + "/")
+                            .queryParam("api_key", apiKey)
+                            .queryParam("format", "json")
+                            .build()
+                    ).retrieve()
+                    .body(ComicVineDtos.VolumeDetailResponse.class);
+            if (response == null || response.results() == null) {
+                return Optional.empty();
+            }
+            return Optional.of(response.results());
+        } catch (Exception e) {
+            return Optional.empty();
+        }
     }
 }

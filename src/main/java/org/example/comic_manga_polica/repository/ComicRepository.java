@@ -15,4 +15,6 @@ public interface ComicRepository extends JpaRepository<Comic, Long> {
     List<Comic> findByNazivContainingIgnoreCaseAndReleaseYear(String naziv, Integer releaseYear);
 
     List<Comic> findByReleaseYear(Integer releaseYear);
+
+    Optional<Comic> findByNaziv(String naziv);
 }
