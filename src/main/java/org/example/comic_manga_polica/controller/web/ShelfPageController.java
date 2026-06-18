@@ -4,6 +4,7 @@ import org.example.comic_manga_polica.dto.BookShelfRequest;
 import org.example.comic_manga_polica.entity.BookShelf;
 import org.example.comic_manga_polica.entity.Status;
 import org.example.comic_manga_polica.service.BookShelfService;
+import org.example.comic_manga_polica.service.ReviewService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -15,9 +16,11 @@ import java.util.List;
 public class ShelfPageController {
 
     private final BookShelfService bookShelfService;
+    private final ReviewService reviewService;
 
-    public ShelfPageController(BookShelfService bookShelfService) {
+    public ShelfPageController(BookShelfService bookShelfService, ReviewService reviewService) {
         this.bookShelfService = bookShelfService;
+        this.reviewService = reviewService;
     }
 
     @GetMapping
@@ -35,6 +38,8 @@ public class ShelfPageController {
         BookShelf shelf= bookShelfService.findById(id);
 
         model.addAttribute("shelf", shelf);
+
+        model.addAttribute("review", reviewService.findOptionalByShelfId(id).orElse(null));
 
         return "shelf-detalji";
     }
@@ -55,5 +60,12 @@ public class ShelfPageController {
         bookShelfService.updateStatus(shelfId, status);
 
         return "redirect:/shelf/" + shelfId;
+    }
+
+    @PostMapping("/delete/{id}")
+    public String obrisiPolicu(@PathVariable Long id){
+        bookShelfService.delete(id);
+
+        return "redirect:/shelf";
     }
 }

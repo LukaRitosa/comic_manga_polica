@@ -18,6 +18,7 @@ public class BookShelf {
     private Comic comic;
 
 
+
     protected BookShelf(){}
 
     public BookShelf(Long id, Status stanje, Comic comic) {

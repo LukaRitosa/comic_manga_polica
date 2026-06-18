@@ -19,7 +19,7 @@ public class Review {
 
     @OneToOne(optional=false, fetch = FetchType.EAGER)
     @JoinColumn(name = "shelf_id", nullable=false, unique = true)
-    private BookShelf bookShelf;
+    private BookShelf shelf;
 
     protected Review() {}
 
@@ -55,10 +55,10 @@ public class Review {
     }
 
     public BookShelf getBookShelf() {
-        return bookShelf;
+        return shelf;
     }
 
     public void setBookShelf(BookShelf bookShelf) {
-        this.bookShelf = bookShelf;
+        this.shelf = bookShelf;
     }
 }

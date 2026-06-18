@@ -63,13 +63,13 @@ public class BookShelfServiceImpl implements BookShelfService {
 
     @Override
     public BookShelf updateStatus(Long id, Status status) {
-        BookShelf bookShelf= this.bookShelfRepository.findById(id)
+        BookShelf bookShelf= bookShelfRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Bookshelf not found" + id));;
 
 
         bookShelf.setStanje(status);
 
-        return this.bookShelfRepository.save(bookShelf);
+        return bookShelfRepository.save(bookShelf);
     }
 
     @Override

@@ -3,6 +3,7 @@ package org.example.comic_manga_polica.service.impl;
 import org.example.comic_manga_polica.dto.ReviewRequest;
 import org.example.comic_manga_polica.entity.BookShelf;
 import org.example.comic_manga_polica.entity.Review;
+import org.example.comic_manga_polica.entity.Status;
 import org.example.comic_manga_polica.exeption.NotFoundException;
 import org.example.comic_manga_polica.repository.BookShelfRepository;
 import org.example.comic_manga_polica.repository.ComicRepository;
@@ -10,7 +11,7 @@ import org.example.comic_manga_polica.repository.ReviewRepository;
 import org.example.comic_manga_polica.service.ReviewService;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.*;
 
 @Service
 public class ReviewServiceImpl implements ReviewService {
@@ -41,9 +42,18 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
+    public Optional<Review> findOptionalByShelfId(Long shelfId) {
+        return reviewRepository.findByShelfId(shelfId);
+    }
+
+    @Override
     public Review create(ReviewRequest req) {
         BookShelf bookShelf= bookShelfRepository.findById(req.getShelfId())
                 .orElseThrow(() -> new NotFoundException("Shelf not found " + req.getShelfId()));
+
+        if (bookShelf.getStanje()== Status.ON_SHELF){
+            throw new IllegalStateException("Ne možeš dodati recenziju za naslov koji nisi počeo čitati.");
+        }
 
         Review review= new Review(null, req.getZvjezdice(), req.getKomentar(), bookShelf);
 

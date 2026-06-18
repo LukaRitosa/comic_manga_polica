@@ -44,6 +44,8 @@
             <th>Godina</th>
             <th>Status</th>
             <th>Slika</th>
+            <th>Recenzija</th>
+            <th>Obriši</th>
         </tr>
         </thead>
         <tbody>
@@ -55,6 +57,15 @@
             <td th:text="${stavka.comic.releaseYear}"></td>
             <td th:text="${stavka.stanje}"></td>
             <td><img th:src="${stavka.comic.slika}" width="80"></td>
+            <td>NA</td>
+            <td onclick="event.stopPropagation();">
+                <form method="post" th:action="@{/shelf/delete/{id}(id=${stavka.id})}"
+                      onsubmit="return confirm('Potvrdi brisanje stavke');">
+                    <button type="submit" style="cursor: pointer; color: red; font-size: 18px; background: none; border: none;">
+                        x
+                    </button>
+                </form>
+            </td>
         </tr>
         </tbody>
     </table>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+    <div th:fragment="review">
+        <h2>Recenzija</h2>
+
+        <div th:if="${review != null}">
+            <p>Ocjena: <strong th:text="${review.zvjezdice}"></strong>/5</p>
+            <p th:text="${review.komentar}"></p>
+
+            <form th:action="@{/review/uredi/{id}(id=${review.id})}" method="post">
+                <input type="hidden" name="shelfId" th:value="${shelf.id}">
+
+                <select name="zvjezdice">
+                    <option value="1" th:selected="${review.zvjezdice == 1}">1</option>
+                    <option value="2" th:selected="${review.zvjezdice == 2}">2</option>
+                    <option value="3" th:selected="${review.zvjezdice == 3}">3</option>
+                    <option value="4" th:selected="${review.zvjezdice == 4}">4</option>
+                    <option value="5" th:selected="${review.zvjezdice == 5}">5</option>
+                </select>
+
+                <textarea name="komentar" rows="3" cols="40"
+                          th:text="${review.komentar}"></textarea>
+
+                <button type="submit">Spremi izmjene</button>
+            </form>
+
+            <form th:action="@{/review/obrisi/{id}(id=${review.id})}" method="post"
+                  onsubmit="return confirm('Obriši recenziju?');">
+                <input type="hidden" name="shelfId" th:value="${shelf.id}">
+                <button type="submit" style="color:red;">Obriši recenziju</button>
+            </form>
+        </div>
+
+        <div th:unless="${review != null}">
+            <div th:if="${shelf.stanje.name() == 'ON_SHELF'}">
+                <p style="color:gray;">Počni čitati da bi mogao/la dodati recenziju.</p>
+            </div>
+            <div th:unless="${shelf.stanje.name() == 'ON_SHELF'}">
+                <a th:href="@{/review/dodaj/{id}(id=${shelf.id})}">Dodaj recenziju</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

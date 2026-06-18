@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+    <h1>Dodaj recenziju</h1>
+
+    <div>
+        <h2 th:text="${shelf.comic.naziv}"></h2>
+        <img th:src="${shelf.comic.slika}" width="150">
+        <p>Autor: <span th:text="${shelf.comic.autor}"></span></p>
+        <p>Status: <span th:text="${shelf.stanje}"></span></p>
+    </div>
+
+    <hr>
+
+    <form th:action="@{/review/dodaj}" method="post">
+        <input type="hidden" name="shelfId" th:value="${shelf.id}">
+
+        <label>Ocjena (1-5):
+            <select name="zvjezdice">
+                <option value="">Odaberi</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select>
+        </label>
+        <br><br>
+
+        <label>Komentar:
+            <br>
+            <textarea name="komentar" rows="4" cols="40"
+                      placeholder="Napiši svoj komentar..."></textarea>
+        </label>
+        <br><br>
+
+        <button type="submit">Spremi recenziju</button>
+        <a th:href="@{/shelf/{id}(id=${shelf.id})}">Odustani</a>
+    </form>
+</body>
+</html>
