@@ -9,7 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.*;
 
 @Controller
 @RequestMapping("/shelf")
@@ -29,6 +29,15 @@ public class ShelfPageController {
 
         model.addAttribute("stavke", stavke);
         model.addAttribute("stanje", stanje);
+
+        Map<Long, Integer> stavkeReviews= new HashMap<>();
+
+        for(BookShelf s : stavke){
+            reviewService.findOptionalByShelfId(s.getId())
+                    .ifPresent(r -> stavkeReviews.put(s.getId(), r.getZvjezdice()));
+        }
+
+        model.addAttribute("stavkeReviews", stavkeReviews);
 
         return "shelf";
     }

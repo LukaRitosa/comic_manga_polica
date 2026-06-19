@@ -27,9 +27,9 @@
         <span th:text="${comic.tip}"></span>
     </p>
 
-    <a href="/pretraga">
-        Nova pretraga
-    </a>
+    <a th:href="@{/}">Početna</a> |
+    <a th:href="@{/comic/sve}">Svi naslovi</a> |
+    <a th:href="@{/pretraga}">Nova pretraga</a>
 
 </body>
 </html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Stripovi i mange</title>
+</head>
+<body>
+    <h1>Stripovi i mange</h1>
+
+    <a th:href="@{/pretraga}">+ Pretraži novi naslov</a>
+    <br><br>
+
+    <p th:if="${#lists.isEmpty(comics)}">
+        Nema naslova koji nisu na polici.
+        <a th:href="@{/pretraga}">Pretraži i dodaj novi.</a>
+    </p>
+
+    <div style="display:flex; flex-wrap:wrap; gap:15px;">
+        <div th:each="comic : ${comics}"
+             style="border:1px solid black; padding:10px; width:180px; cursor:pointer;"
+             th:onclick="|window.location='/comic/' + ${comic.id}|">
+            <img th:if="${comic.slika != ''}" th:src="${comic.slika}" width="150">
+            <h3 th:text="${comic.naziv}"></h3>
+            <p th:text="${comic.autor}"></p>
+            <p th:text="${comic.releaseYear}"></p>
+            <span th:text="${comic.tip}"></span>
+        </div>
+    </div>
+
+    <br>
+    <a th:href="@{/}">Početna</a>
+</body>
+</html>

@@ -195,4 +195,9 @@ public class ComicServiceImpl implements ComicService {
         }
     };
 
+    @Override
+    public List<Comic> findNotOnShelf() {
+        return comicRepository.findComicsNotOnShelf();
+    }
+
 }

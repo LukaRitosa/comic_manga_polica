@@ -18,4 +18,5 @@ public interface ComicService {
     Comic createComicFromApi(String naziv, Tip tip);
     List<ComicPreview> searchPreview(String naziv, Tip tip);
     Comic confirmAndSave(Tip tip, Long externalId);
+    List<Comic> findNotOnShelf();
 }
