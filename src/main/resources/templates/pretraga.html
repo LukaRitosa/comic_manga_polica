@@ -5,13 +5,17 @@
     <title>Pretraga</title>
 </head>
 <body>
-<h1>Pretraži naslov</h1>
+    <h1>Pretraži naslov</h1>
 
-<form th:action="@{/pretraga/rezultati}" method="get">
-    <input type="text" name="naziv" placeholder="Naziv stripa/mange" required>
-    <br><br>
-    <button type="submit" name="tip" value="MANGA">Pretraži mangu</button>
-    <button type="submit" name="tip" value="COMIC">Pretraži strip</button>
-</form>
+    <form th:action="@{/pretraga/rezultati}" method="get">
+        <input type="text" name="naziv" placeholder="Naziv stripa/mange" required>
+        <br><br>
+        <button type="submit" name="tip" value="MANGA">Pretraži mangu</button>
+        <button type="submit" name="tip" value="COMIC">Pretraži strip</button>
+    </form>
+
+    <br>
+
+    <a th:href="@{/}">Početna</a>
 </body>
 </html>

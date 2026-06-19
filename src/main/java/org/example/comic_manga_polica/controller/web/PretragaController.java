@@ -3,6 +3,7 @@ package org.example.comic_manga_polica.controller.web;
 import org.example.comic_manga_polica.dto.ComicPreview;
 import org.example.comic_manga_polica.entity.Comic;
 import org.example.comic_manga_polica.entity.Tip;
+import org.example.comic_manga_polica.exeption.ApiUnavailableException;
 import org.example.comic_manga_polica.service.ComicService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,17 +30,18 @@ public class PretragaController {
 
     @GetMapping("/rezultati")
     public String prikaziRezultate(@RequestParam String naziv, @RequestParam Tip tip, Model model) {
-        System.out.println("NAZIV=" + naziv);
-        System.out.println("TIP=" + tip);
+        try{
+            List<ComicPreview> rezultati = comicService.searchPreview(naziv, tip);
 
-        List<ComicPreview> rezultati =
-                comicService.searchPreview(naziv, tip);
 
-        System.out.println("BROJ=" + rezultati.size());
-
-        model.addAttribute("rezultati", rezultati);
-        model.addAttribute("naziv", naziv);
-
+            model.addAttribute("rezultati", rezultati);
+            model.addAttribute("naziv", naziv);
+            model.addAttribute("apiError", null);
+        } catch (ApiUnavailableException e) {
+            model.addAttribute("rezultati", List.of());
+            model.addAttribute("naziv", naziv);
+            model.addAttribute("apiError", e.getMessage());
+        }
         return "pretraga-rezultati";
     }
 

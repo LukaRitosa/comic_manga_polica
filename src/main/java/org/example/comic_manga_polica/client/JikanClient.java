@@ -1,6 +1,7 @@
 package org.example.comic_manga_polica.client;
 
 import org.example.comic_manga_polica.dto.external.jikan.JikanDtos;
+import org.example.comic_manga_polica.exeption.ApiUnavailableException;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
@@ -52,6 +53,10 @@ public class JikanClient {
                 return List.of();
             }
             return response.data();
+
+
+        } catch (org.springframework.web.client.HttpServerErrorException e) {
+            throw new ApiUnavailableException("Jikan API trenutno nije dostupan. Pokušajte ponovno kasnije.");
         } catch (Exception e) {
             return List.of();
         }
@@ -70,6 +75,8 @@ public class JikanClient {
                 return Optional.empty();
             }
             return Optional.of(response.data());
+        } catch (org.springframework.web.client.HttpServerErrorException e) {
+            throw new ApiUnavailableException("Jikan API trenutno nije dostupan. Pokušajte ponovno kasnije.");
         } catch (Exception e) {
             return Optional.empty();
         }
