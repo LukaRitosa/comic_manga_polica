@@ -9,7 +9,7 @@
     <h1>Moja polica</h1>
     <a th:href="@{/comic/sve}">+ Dodaj naslov na policu</a>
 
-    <form method="get" th:action="@{/shelf}">
+    <form method="get" th:unless="${#lists.isEmpty(stavke)}" th:action="@{/shelf}">
         <select name="stanje">
             <option value="">
                 Sve
@@ -38,7 +38,11 @@
 
     <br>
 
-    <table border="1">
+    <p th:if="${#lists.isEmpty(stavke)}">
+        Polica je prazna.
+    </p>
+
+    <table th:unless="${#lists.isEmpty(stavke)}" border="1">
         <thead>
         <tr>
             <th>Naziv</th>
